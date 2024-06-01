@@ -36,6 +36,7 @@ defined( 'ABSPATH' ) || exit;
 				$fields = $checkout->get_checkout_fields( 'shipping' );
 
 				foreach ( $fields as $key => $field ) {
+					$field['input_class'][] = 'form-control';
 					woocommerce_form_field( $key, $field, $checkout->get_value( $key ) );
 				}
 				?>

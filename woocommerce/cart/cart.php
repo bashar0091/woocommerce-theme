@@ -369,6 +369,11 @@ do_action("woocommerce_before_cart");
                           ); ?>"><?php esc_html_e("Update cart", "woocommerce"); ?></button>
                         </div>
                         
+                        <script>
+                            jQuery('.qty-control__increase, .qty-control__reduce').on('click', function(){
+                                jQuery('.cs_btn').removeAttr('disabled');
+                            });
+                        </script>
 
                         <?php do_action("woocommerce_cart_actions"); ?>
 
