@@ -41,6 +41,10 @@ function get_my_account_page_title() {
     return get_the_title(); // Fallback to default title if no match is found
 }
 
+$dasboard_class = 'my-account__dashboard';
+if(get_my_account_page_title() == 'Addresses') {
+	$dasboard_class = 'my-account__address';
+}
 ?>
 
 <style>
@@ -51,6 +55,9 @@ function get_my_account_page_title() {
 	li.is-active a:after {
 		width: 2em !important;
 	}
+	.my-account__dashboard p {
+		width: 100%;
+	}
 </style>
 <div class="mb-4 pb-4"></div>
 <div class="my-account container">
@@ -60,7 +67,7 @@ function get_my_account_page_title() {
 			<?php do_action( 'woocommerce_account_navigation' );?>
 		</div>
 		<div class="col-lg-9">
-			<div class="page-content my-account__dashboard">
+			<div class="page-content <?= $dasboard_class;?>">
 				<?php
 					/**
 					 * My Account content.
