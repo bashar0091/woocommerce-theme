@@ -22,15 +22,55 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 2.6.0
  */
-do_action( 'woocommerce_account_navigation' ); ?>
 
-<div class="woocommerce-MyAccount-content">
-	<?php
-		/**
-		 * My Account content.
-		 *
-		 * @since 2.6.0
-		 */
-		do_action( 'woocommerce_account_content' );
-	?>
+ // Function to get the dynamic title
+function get_my_account_page_title() {
+    $endpoint = WC()->query->get_current_endpoint();
+    if (empty($endpoint)) {
+        return get_the_title();
+    }
+    
+    $menu_items = wc_get_account_menu_items();
+    
+    foreach ($menu_items as $key => $label) {
+        if ($endpoint === $key) {
+            return $label;
+        }
+    }
+    
+    return get_the_title(); // Fallback to default title if no match is found
+}
+
+?>
+
+<style>
+	li.is-active a {
+		pointer-events: none !important;
+    	color: #c32929 !important;
+	}
+	li.is-active a:after {
+		width: 2em !important;
+	}
+</style>
+<div class="mb-4 pb-4"></div>
+<div class="my-account container">
+	<h2 class="page-title"><?= get_my_account_page_title(); ?></h2>
+	<div class="row">
+		<div class="col-lg-3">
+			<?php do_action( 'woocommerce_account_navigation' );?>
+		</div>
+		<div class="col-lg-9">
+			<div class="page-content my-account__dashboard">
+				<?php
+					/**
+					 * My Account content.
+					 *
+					 * @since 2.6.0
+					 */
+					do_action( 'woocommerce_account_content' );
+				?>
+			</div>
+		</div>
+	</div>
 </div>
+<div class="mb-5 pb-xl-5"></div>

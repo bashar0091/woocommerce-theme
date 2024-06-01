@@ -83,59 +83,54 @@ function page_heading() {
 
             <div class="pt-4 pt-lg-0"></div>
 
-            <div class="accordion" id="categories-list">
-                <div class="accordion-item mb-4 pb-3">
-                    <h5 class="accordion-header" id="accordion-heading-11">
-                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-filter-1" aria-expanded="true" aria-controls="accordion-filter-1">
-                            Product Categories
-                            <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
-                                <g aria-hidden="true" stroke="none" fill-rule="evenodd">
-                                    <path
-                                        d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z"
-                                    ></path>
-                                </g>
-                            </svg>
-                        </button>
-                    </h5>
-                    <div id="accordion-filter-1" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
-                        <div class="accordion-body px-0 pb-0 pt-3">
-                            <ul class="list list-inline mb-0">
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Dresses</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Shorts</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Sweatshirts</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Swimwear</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Jackets</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">T-Shirts &amp; Tops</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Jeans</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Trousers</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Men</a>
-                                </li>
-                                <li class="list-item">
-                                    <a href="#" class="menu-link py-1">Jumpers &amp; Cardigans</a>
-                                </li>
-                            </ul>
+            <?php 
+            if (!empty($product_categories) && !is_wp_error($product_categories)) {
+                ?>
+                <div class="accordion" id="categories-list">
+                    <div class="accordion-item mb-4 pb-3">
+                        <h5 class="accordion-header" id="accordion-heading-11">
+                            <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-filter-1" aria-expanded="true" aria-controls="accordion-filter-1">
+                                Product Categories
+                                <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                    <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                        <path
+                                            d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                            </button>
+                        </h5>
+                        <div id="accordion-filter-1" class="accordion-collapse collapse show border-0" aria-labelledby="accordion-heading-11" data-bs-parent="#categories-list">
+                            <div class="accordion-body px-0 pb-0 pt-3">
+                                <ul class="list list-inline mb-0">
+                                    <?php 
+                                    foreach ($product_categories as $key=>$category) {
+
+                                        $category_link = get_term_link($category);
+                                        if($category->slug == 'uncategorized') {
+                                            continue;
+                                        }
+
+                                        $is_active = '';
+                                        if( !empty($get_cat->slug) && $get_cat->slug == $category->slug ) {
+                                        $is_active = 'menu-link_active';
+                                        }
+                                        ?>
+                                        <li class="list-item active">
+                                            <a href="<?= $category_link;?>" class="menu-link py-1 menu-link_us-s <?= $is_active;?>"><?= esc_html($category->name);?></a>
+                                        </li>
+                                        <?php
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <!-- /.accordion-item -->
                 </div>
-                <!-- /.accordion-item -->
-            </div>
+                <?php
+            }
+            ?>
             <!-- /.accordion-item -->
 
             <div class="accordion" id="color-filters">
@@ -349,38 +344,6 @@ function page_heading() {
                 </div>
                 <!-- /.breadcrumb -->
 
-                <div class="shop-acs d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-                    <select class="shop-acs__select form-select w-auto border-0 py-0 order-1 order-md-0" aria-label="Sort Items" name="total-number">
-                        <option selected="">Default Sorting</option>
-                        <option value="1">Featured</option>
-                        <option value="2">Best selling</option>
-                        <option value="3">Alphabetically, A-Z</option>
-                        <option value="3">Alphabetically, Z-A</option>
-                        <option value="3">Price, low to high</option>
-                        <option value="3">Price, high to low</option>
-                        <option value="3">Date, old to new</option>
-                        <option value="3">Date, new to old</option>
-                    </select>
-
-                    <div class="shop-asc__seprator mx-3 bg-light d-none d-md-block order-md-0"></div>
-
-                    <div class="col-size align-items-center order-1 d-none d-lg-flex">
-                        <span class="text-uppercase fw-medium me-2">View</span>
-                        <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid" data-cols="2">2</button>
-                        <button class="btn-link fw-medium me-2 js-cols-size" data-target="products-grid" data-cols="3">3</button>
-                        <button class="btn-link fw-medium js-cols-size" data-target="products-grid" data-cols="4">4</button>
-                    </div>
-                    <!-- /.col-size -->
-
-                    <div class="shop-filter d-flex align-items-center order-0 order-md-3 d-lg-none">
-                        <button class="btn-link btn-link_f d-flex align-items-center ps-0 js-open-aside" data-aside="shopFilter">
-                            <svg class="d-inline-block align-middle me-2" width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_filter"></use></svg>
-                            <span class="text-uppercase fw-medium d-inline-block align-middle">Filter</span>
-                        </button>
-                    </div>
-                    <!-- /.col-size d-flex align-items-center ms-auto ms-md-3 -->
-                </div>
-                <!-- /.shop-acs -->
             </div>
             <!-- /.d-flex justify-content-between -->
 
@@ -390,38 +353,33 @@ function page_heading() {
               <div class="products-grid row row-cols-2 row-cols-md-3" id="products-grid">
                 <?php 
                 while ( have_posts() ) {
-                  the_post();
+                    the_post();
 
-                  $product_id = get_the_id();
-                  $product = wc_get_product( $product_id );
+                    $product_id = get_the_id();
+                    $product = wc_get_product( $product_id );
+
+                    $gallery_image_id = $product->get_gallery_image_ids()[0];
+                    $gallery_image_url = wp_get_attachment_url($gallery_image_id);
                   ?>
                   <div class="product-card-wrapper">
                     <div class="product-card mb-3 mb-md-4 mb-xxl-5">
                         <div class="pc__img-wrapper">
-                            <div class="swiper-container background-img js-swiper-slider swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events" data-settings='{"resizeObserver": true}'>
-                                <div class="swiper-wrapper" id="swiper-wrapper-2151587abaaf81a4" aria-live="polite" style="transform: translate3d(-330px, 0px, 0px); transition-duration: 0ms;">
-                                    <!-- /.pc__img-wrapper -->
-                                    <div class="swiper-slide swiper-slide-next swiper-slide-duplicate-prev" data-swiper-slide-index="1" style="width: 330px;" role="group" aria-label="3 / 4">
-                                        <a href="./product1_simple.html"><img src="<?= get_the_post_thumbnail_url();?>" alt="Cropped Faux leather Jacket" class="pc__img h-100 w-100"/></a>
-                                    </div>
-                                    <!-- /.pc__img-wrapper -->
-                                    <div class="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-active" data-swiper-slide-index="0" style="width: 330px;" role="group" aria-label="4 / 4">
-                                        <a href="./product1_simple.html"><img src="<?= get_the_post_thumbnail_url();?>" alt="Cropped Faux leather Jacket" class="pc__img h-100 w-100"/></a>
-                                    </div>
-                                </div>
-                                <span class="pc__img-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-2151587abaaf81a4">
-                                    <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm"></use></svg>
-                                </span>
-                                <span class="pc__img-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-2151587abaaf81a4">
-                                    <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm"></use></svg>
-                                </span>
-                                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                            </div>
-                            <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                            <a href="<?= get_the_permalink();?>">
+                                <img loading="lazy" src="<?= get_the_post_thumbnail_url();?>" alt="product_img" class="pc__img" style="height:100%;">
+                                <img loading="lazy" src="<?= $gallery_image_url;?>" alt="product_img" class="pc__img pc__img-second" style="height:100%;">
+                            </a>
+                            
+                            <form action="" method="post" class="add_cart_handler">
+                                <input type="hidden" name="product_id" value="<?= $product_id;?>">
+                                <input type="number" name="quantity" value="1">
+                                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" title="Add To Cart">
+                                    <span class="cart_text">Add To Cart</span>
+                                    <span class="spinner"></span>
+                                </button>
+                            </form>
                         </div>
 
                         <div class="pc__info position-relative">
-                            <p class="pc__category">Dresses</p>
                             <h6 class="pc__title"><a href="<?= get_the_permalink();?>"><?= get_the_title();?></a></h6>
                             <div class="product-card__price d-flex">
                                 <span class="money price price-sale"><?= wc_price($product->get_price());?></span>
