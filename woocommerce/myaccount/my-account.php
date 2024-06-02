@@ -44,6 +44,8 @@ function get_my_account_page_title() {
 $dasboard_class = 'my-account__dashboard';
 if(get_my_account_page_title() == 'Addresses') {
 	$dasboard_class = 'my-account__address';
+} else if(get_my_account_page_title() == 'Wishlist') {
+	$dasboard_class = 'my-account__wishlist';
 }
 ?>
 
